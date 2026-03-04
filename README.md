@@ -10,15 +10,11 @@ O sistema calcula automaticamente **quais produtos devem ser produzidos com o es
 
 ## Raw Materials
 
-*(colocar screenshot aqui)*
-
 ![Raw Materials Screenshot](./screenshots/raw-materials.png)
 
 ---
 
 ## Products
-
-*(colocar screenshot aqui)*
 
 ![Products Screenshot](./screenshots/products.png)
 
@@ -26,15 +22,11 @@ O sistema calcula automaticamente **quais produtos devem ser produzidos com o es
 
 ## Production Suggestion
 
-*(colocar screenshot aqui)*
-
 ![Production Suggestion Screenshot](./screenshots/production.png)
 
 ---
 
 # Arquitetura do Projeto
-
-O projeto foi dividido em duas aplicações:
 
 ```bash
 AutoFlex/
@@ -72,6 +64,8 @@ AutoFlex/
 ├── screenshots/
 └── README.md 
 ```
+
+O projeto foi dividido em duas aplicações:
 
 ## Backend
 
@@ -449,21 +443,8 @@ Sidebar fixa
 
 ---
 
-# Melhorias Futuras
-
-Possíveis evoluções do sistema:
-
-* Edição completa da BOM no frontend
-* Autenticação de usuários
-* Controle de produção real
-* Histórico de produção
-* Dashboard com gráficos
-* Testes automatizados
-
----
-
 # Autor
 
-Desenvolvido por **Paulo Eduardo Lima**
+Desenvolvido por **Paulo Eduardo Lima Rabelo**
 
 Teste técnico — AutoFlex.
