@@ -1,0 +1,209 @@
+.ps-page {
+  padding: 16px;
+}
+
+.ps-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.ps-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.ps-title {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.ps-subtitle {
+  margin: 6px 0 0;
+  color: #6b7280;
+}
+
+.ps-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ps-search {
+  flex: 1;
+  min-width: 220px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  background: white;
+}
+
+.ps-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: 0 2px 10px rgba(17, 24, 39, 0.06);
+  margin-bottom: 14px;
+}
+
+.ps-section-title {
+  margin: 0 0 10px;
+  font-size: 1.1rem;
+}
+
+.ps-alert {
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  color: #7f1d1d;
+  padding: 10px 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.ps-btn {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.ps-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.ps-btn--secondary {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.ps-btn--secondary:hover {
+  background: #d2d4d8;
+  color: #111827;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(0,0,0,0.16);
+}
+
+.ps-empty {
+  color: #6b7280;
+  padding: 8px 2px;
+}
+
+.ps-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.ps-meta {
+  color: #6b7280;
+  font-weight: 600;
+}
+
+/* Summary */
+.ps-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.ps-summary-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 12px;
+  background: #fafafa;
+}
+
+.ps-summary-label {
+  color: #6b7280;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.ps-summary-value {
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: #111827;
+}
+
+/* Mobile list */
+.ps-mobile-list {
+  display: grid;
+  gap: 10px;
+}
+
+.ps-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 12px;
+  background: #fafafa;
+}
+
+.ps-item__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.ps-item__title {
+  font-weight: 900;
+}
+
+.ps-item__code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.ps-item__row {
+  display: flex;
+  justify-content: space-between;
+  color: #374151;
+  margin-bottom: 10px;
+}
+
+/* Desktop table */
+.ps-table-wrap {
+  display: none;
+  overflow: auto;
+}
+
+.ps-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ps-table th,
+.ps-table td {
+  padding: 10px 10px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+/* Responsive breakpoint */
+@media (min-width: 900px) {
+  .ps-header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .ps-table-wrap {
+    display: block;
+  }
+
+  .ps-mobile-list {
+    display: none;
+  }
+
+  .ps-summary-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

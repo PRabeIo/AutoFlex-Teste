@@ -1,0 +1,33 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "seed": "node src/scripts/seed.js",
+    "test": "jest --runInBand",
+    "test:watch": "jest --watch",
+    "dev:test": "cross-env DOTENV_CONFIG_PATH=.env.test node -r dotenv/config src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "pg": "^8.19.0"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0",
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.14",
+    "supertest": "^7.2.2"
+  },
+    "jest": {
+    "setupFiles": ["<rootDir>/tests/integration/setupEnv.js"],
+    "setupFilesAfterEnv": ["<rootDir>/tests/integration/jestAfterEnv.js"]
+  }
+}
