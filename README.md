@@ -2,27 +2,55 @@
 
 Sistema web para **gestão de matérias-primas, produtos e planejamento de produção**, desenvolvido como teste técnico.
 
-O sistema calcula automaticamente **quais produtos devem ser produzidos com o estoque disponível**, utilizando um algoritmo **Greedy (ganancioso)** para maximizar o valor total da produção.
+O sistema calcula automaticamente **quais produtos podem ser produzidos com o estoque disponível**, utilizando um algoritmo **Greedy** que prioriza produtos de **maior valor unitário**, maximizando o valor total da produção sugerida.
+
+---
+
+# Live Demo
+  
+https://auto-flex-teste-qcbb.vercel.app
 
 ---
 
 # Demonstração
 
-## Raw Materials
+## Desktop
+
+### Raw Materials
 
 ![Raw Materials Screenshot](./screenshots/raw-materials.png)
 
 ---
 
-## Products
+### Products
 
 ![Products Screenshot](./screenshots/products.png)
 
 ---
 
-## Production Suggestion
+### Production Suggestion
 
 ![Production Suggestion Screenshot](./screenshots/production.png)
+
+---
+
+## Mobile
+
+### Raw Materials
+
+![Raw Materials Screenshot](./screenshots/mobile/raw-materials.png)
+
+---
+
+### Products
+
+![Products Screenshot](./screenshots/mobile/products.png)
+
+---
+
+### Production Suggestion
+
+![Production Suggestion Screenshot](./screenshots/mobile/production.png)
 
 ---
 
@@ -31,6 +59,8 @@ O sistema calcula automaticamente **quais produtos devem ser produzidos com o es
 ```bash
 AutoFlex/
 ├── backend/
+│   ├── api/
+│   │
 │   ├── src/
 │   │   ├── config/
 │   │   ├── controllers/
@@ -41,80 +71,56 @@ AutoFlex/
 │   │   ├── utils/
 │   │   ├── app.js
 │   │   └── server.js
-│   ├── test/
-│   │   ├── integration/
-│   │   └── unit/
+│   │   
+│   ├── tests/
+│   │     ├── integration/
+│   │     └── unit/
+│   │   
 │   ├── .env.example
 │   └── schema.sql
 │
-├── frontend
+├── frontend/
 │   ├── src/
 │   │   ├── pages/
 │   │   │   ├── Production/
 │   │   │   ├── Products/
 │   │   │   └── RawMaterials/
+│   │   │
 │   │   ├── assets/
 │   │   ├── layout/
 │   │   ├── services/
 │   │   ├── App.jsx
-│   │   └── main.jss
-│   ├── public/   
-│   └── .env.example   
+│   │   └── main.jsx
+│   │   
+│   ├── public/
+│   └── .env.example
 │
 ├── screenshots/
-└── README.md 
+└── README.md
 ```
 
-O projeto foi dividido em duas aplicações:
+
+O projeto é dividido em duas aplicações:
 
 ## Backend
 
 API REST responsável por:
 
-* Gerenciamento de matérias-primas
-* Gerenciamento de produtos
-* Gerenciamento da estrutura de materiais (BOM)
-* Cálculo da sugestão de produção
+- Gerenciamento de matérias-primas
+- Gerenciamento de produtos
+- Gerenciamento da estrutura de materiais (BOM)
+- Cálculo da sugestão de produção
 
-Tecnologias:
+Tecnologias utilizadas:
 
-* Node.js
-* Express
-* PostgreSQL
-* SQL puro (sem ORM)
-
----
-
-## Frontend
-
-Aplicação web responsável pela interface do sistema.
-
-Tecnologias:
-
-* React
-* Vite
-* CSS puro (sem frameworks)
+- Node.js
+- Express
+- PostgreSQL
+- SQL puro utilizando o driver `pg`
 
 ---
 
-# Decisões Técnicas
-
-## Sem ORM
-
-Foi utilizado **SQL direto via `pg`** em vez de ORM.
-
-Motivos:
-
-* Melhor controle das queries
-* Redução de complexidade
-* Melhor desempenho
-* Projeto pequeno não justifica camada ORM
-
----
-
-## Arquitetura Backend
-
-Responsabilidades:
+### Arquitetura Backend
 
 | Camada      | Responsabilidade                       |
 | ----------- | -------------------------------------- |
@@ -125,38 +131,30 @@ Responsabilidades:
 
 ---
 
-## Algoritmo de Planejamento
+## Frontend
 
-O planejamento utiliza uma estratégia **Greedy**:
+Aplicação web responsável pela interface do sistema.
 
-1. Ordena produtos por **maior preço**
-2. Para cada produto calcula **quantas unidades podem ser produzidas**
-3. Consome o estoque
-4. Continua até esgotar as matérias-primas
+Tecnologias utilizadas:
+
+- React
+- Vite
+- CSS puro
 
 ---
 
-### Exemplo
+# Algoritmo de Planejamento
 
-Estoque:
+O planejamento de produção utiliza uma estratégia **Greedy**.
 
-```
-Plastic: 100
-Rubber: 50
-```
+O processo funciona da seguinte forma:
 
-Produtos:
+1. Os produtos são ordenados por **maior preço unitário**
+2. Para cada produto é calculada a **quantidade máxima que pode ser produzida**
+3. O estoque de matérias-primas é consumido
+4. O processo continua até esgotar os recursos disponíveis
 
-```
-Product A (valor 100)
-Product B (valor 80)
-```
-
-Resultado:
-
-```
-Produzir primeiro o produto de maior valor.
-```
+Devido à priorização por valor, **produtos de menor valor podem não aparecer na sugestão caso matérias-primas compartilhadas sejam totalmente consumidas por produtos mais valiosos.**
 
 ---
 
@@ -164,7 +162,7 @@ Produzir primeiro o produto de maior valor.
 
 ## raw_material
 
-```
+```sql
 id
 code CHAR(10)
 name
@@ -175,7 +173,7 @@ stock_quantity
 
 ## product
 
-```
+```sql
 id
 code CHAR(10)
 name
@@ -184,11 +182,11 @@ price
 
 ---
 
-## product_raw_material (BOM)
+## product_raw_material (BOM - Bill of Materials)
 
-Tabela de relação entre produto e matéria-prima.
+Tabela responsável por associar produtos às matérias-primas necessárias para sua produção.
 
-```
+```sql
 product_id
 raw_material_id
 required_quantity
@@ -196,38 +194,100 @@ required_quantity
 
 ---
 
-# Backend
+# Endpoints da API
 
-## Instalação
+```bash
+GET /api/raw-materials
+POST /api/raw-materials
+PUT /api/raw-materials/:id
+DELETE /api/raw-materials/:id
 
-Dentro da pasta backend:
+GET /api/products
+POST /api/products
+PUT /api/products/:id
+DELETE /api/products/:id
 
+GET /api/products/:productId/materials
+POST /api/products/:productId/materials
+PUT /api/products/:productId/materials/:itemId
+DELETE /api/products/:productId/materials/:itemId
+
+GET /api/production/suggestion
 ```
+
+---
+
+# Como rodar localmente
+
+## Criar o Banco
+
+1. Acesse o site do Supabase:
+
+https://supabase.com
+
+2. Crie uma conta ou faça login.
+
+3. Clique em **New Project**.
+
+4. Defina:
+
+- Nome do projeto
+- **Senha do banco**
+
+⚠️ **Guarde a senha escolhida**, ela será utilizada na string de conexão.
+
+5. Após o projeto ser criado, vá em SQL Editor
+
+6. Execute o conteúdo do arquivo backend/schema.sql no SQL Editor do Supabase.
+
+```bash
+backend/schema.sql
+```
+
+Esse script criará todas as tabelas necessárias.
+
+7. No topo da página clique em:
+
+```bash
+Connect
+```
+
+8. Copie a **Direct Connection String**.
+
+Ela terá o formato:
+
+```bash
+postgresql://postgres:SUA-SENHA@db.<project-ref>.supabase.co:5432/postgres
+```
+
+## Backend
+
+Abrir um terminal e entrar na pasta do backend:
+
+```bash
+cd backend
+```
+
+Instalar dependências:
+
+```bash
 npm install
 ```
 
----
+Criar arquivo `.env` baseado no `.env.example`:
 
-## Configuração
-
-Criar arquivo `.env`:
-
-```env
+```bash
 PORT=3001
-
-DATABASE_URL=postgresql://postgres:Sua_Senha@db.lchpurmaprqvjraswlds.supabase.co:5432/postgres
-
+DATABASE_URL=postgresql://postgres:SUA-SENHA@db.<project-ref>.supabase.co:5432/postgres
 ```
 
----
-
-## Executar
+Executar servidor:
 
 ```bash
 npm run dev
 ```
 
-API:
+API disponível em:
 
 ```
 http://localhost:3001
@@ -235,141 +295,33 @@ http://localhost:3001
 
 ---
 
-# Endpoints da API
+## Frontend
 
-## Raw Materials
+Abrir outro terminal e entrar na pasta do frontend:
 
-### Listar
-
-```
-GET /api/raw-materials
+```bash
+cd frontend
 ```
 
----
+Instalar dependências:
 
-### Criar
-
-```
-POST /api/raw-materials
-```
-
-Body:
-
-```
-{
-  "code": "RM00000001",
-  "name": "Plastic",
-  "stockQuantity": 100
-}
-```
-
----
-
-### Atualizar
-
-```
-PUT /api/raw-materials/:id
-```
-
----
-
-### Deletar
-
-```
-DELETE /api/raw-materials/:id
-```
-
----
-
-## Products
-
-### Listar
-
-```
-GET /api/products
-```
-
----
-
-### Criar
-
-```
-POST /api/products
-```
-
-```
-{
-  "code": "P000000001",
-  "name": "Rubber Grip",
-  "price": 10.50
-}
-```
-
----
-
-### Atualizar
-
-```
-PUT /api/products/:id
-```
-
----
-
-### Deletar
-
-```
-DELETE /api/products/:id
-```
-
----
-
-## Production Suggestion
-
-Calcula o planejamento de produção com base no estoque.
-
-```
-GET /api/production/suggestion
-```
-
-Exemplo de resposta:
-
-```
-{
-  "suggestion": [
-    {
-      "productId": 1,
-      "code": "P000000001",
-      "name": "Rubber Grip",
-      "unitPrice": 10,
-      "suggestedQuantity": 5,
-      "totalValue": 50
-    }
-  ],
-  "grandTotalValue": 50
-}
-```
-
----
-
-# Frontend
-
-## Instalação
-
-Dentro da pasta frontend:
-
-```
+```bash
 npm install
 ```
 
----
+Criar arquivo `.env` baseado no `.env.example`:
 
-## Executar
-
+```bash
+VITE_API_URL=http://localhost:3001/api
 ```
+
+Executar aplicação:
+
+```bash
 npm run dev
 ```
 
-Aplicação:
+Aplicação disponível em:
 
 ```
 http://localhost:5173
@@ -377,69 +329,71 @@ http://localhost:5173
 
 ---
 
-# Funcionalidades
+# Testes
 
-## Raw Materials
+O backend possui testes automatizados utilizando **Jest** e **Supertest**.
 
-* Criar matéria-prima
-* Editar
-* Deletar
-* Visualizar estoque
+Tipos de testes incluídos:
 
----
+- Testes unitários (validators e algoritmo de planejamento)
+- Testes de integração da API
 
-## Products
+Executar testes:
 
-* Criar produto
-* Editar
-* Deletar
-* Definir preço
-
----
-
-## Production Suggestion
-
-* Cálculo automático da produção
-* Visualização do valor total gerado
-* Lista de produtos a produzir
+```bash
+npm test
+```
 
 ---
 
 # Interface
 
-O frontend foi desenvolvido com foco em:
-
-* Layout limpo
-* Responsividade
-* Experiência simples de uso
+A interface foi desenvolvida com foco em **simplicidade e responsividade**.
 
 Características:
 
-* Sidebar fixa no desktop
-* Menu hamburger no mobile
-* Tabelas no desktop
-* Cards no mobile
+- Layout limpo
+- Sidebar fixa no desktop
+- Menu hamburger no mobile
+- Tabelas no desktop
+- Cards no mobile
 
 ---
 
 # Responsividade
 
-O layout foi desenvolvido com abordagem **mobile-first**.
+A interface foi construída utilizando abordagem **mobile-first**.
 
-Estratégia:
+Estratégia de layout:
 
 Mobile:
-
-```
-Cards
-```
+- Cards
 
 Desktop:
+- Tables
+- Sidebar fixa
 
-```
-Tables
-Sidebar fixa
-```
+---
+
+# Tech Stack
+
+## Backend
+
+- Node.js
+- Express
+- PostgreSQL
+- pg
+
+## Frontend
+
+- React
+- Vite
+- CSS
+
+## Infraestrutura
+
+- Supabase (PostgreSQL)
+- Vercel (deploy)
 
 ---
 
@@ -447,4 +401,5 @@ Sidebar fixa
 
 Desenvolvido por **Paulo Eduardo Lima Rabelo**
 
-Teste técnico — AutoFlex.
+Teste técnico — AutoFlex
+
