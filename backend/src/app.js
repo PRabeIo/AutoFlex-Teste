@@ -6,16 +6,7 @@ const errorHandler = require("./middlewares/errorHandler");
 
 const app = express();
 
-app.use(
-  cors({
-    origin: (origin, cb) => {
-      // permite requests sem origin (curl/health checks) e os origins permitidos
-      if (!origin) return cb(null, true);
-      if (allowedOrigins.length === 0) return cb(null, true); // fallback: não quebrar preview
-      return allowedOrigins.includes(origin) ? cb(null, true) : cb(new Error("CORS blocked"));
-    },
-  })
-);
+app.use(cors({ origin: true }));
 app.use(express.json());
 
 // Health check
