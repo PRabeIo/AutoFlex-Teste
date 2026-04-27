@@ -1,6 +1,6 @@
 # AutoFlex Production Planner
 
-Sistema web para **gestão de matérias-primas, produtos e planejamento de produção**, desenvolvido como teste técnico.
+Sistema web para **gestão de matérias-primas, produtos e planejamento de produção**.
 
 O sistema calcula automaticamente **quais produtos podem ser produzidos com o estoque disponível**, utilizando um algoritmo **Greedy** que prioriza produtos de **maior valor unitário**, maximizando o valor total da produção sugerida.
 
@@ -400,6 +400,4 @@ Desktop:
 # Autor
 
 Desenvolvido por **Paulo Eduardo Lima Rabelo**
-
-Teste técnico — AutoFlex
 
